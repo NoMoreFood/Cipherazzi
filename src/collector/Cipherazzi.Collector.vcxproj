@@ -1,0 +1,57 @@
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{7D097A64-8899-5FBF-9FB8-7D89F0A12FA6}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v145</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <Import Project="../../tools/build/Native.props" />
+  <ItemGroup>
+    <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Service.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Resources.rc" />
+    <ResourceCompile Include="$(IntDir)EventMessages.rc" />
+    <CustomBuild Include="EventMessages.mc">
+      <Command>mc.exe -U -h "$(IntDir)." -r "$(IntDir)." "%(FullPath)"</Command>
+      <Outputs>$(IntDir)EventMessages.rc;$(IntDir)EventMessages.h;$(IntDir)EventMessages.bin</Outputs>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>shell32.lib;ole32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ProjectReference Include="Cipherazzi.Core.vcxproj">
+      <Project>{DF61610E-5FD6-5DC0-B1F6-4B82AB02F135}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <Target Name="CopyLoopback" AfterTargets="Build">
+    <PropertyGroup>
+      <RestoreScript>$(CipherazziRoot)tools\build\Restore.ps1</RestoreScript>
+      <RestoreCommand>$(PowerShellCommand) &quot;$(RestoreScript)&quot;</RestoreCommand>
+    </PropertyGroup>
+    <Exec Command="$(RestoreCommand) -LoopbackOutput &quot;$(OutDir)CipherazziLoopback&quot;" />
+  </Target>
+</Project>

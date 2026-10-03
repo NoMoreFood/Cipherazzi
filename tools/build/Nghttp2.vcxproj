@@ -1,0 +1,68 @@
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{EF65800C-E6DF-5754-88F9-AD190756217A}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <PlatformToolset>v145</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <Import Project="Native.props" />
+  <ItemGroup>
+    <ClCompile Include="$(DependencyRoot)nghttp2/lib/nghttp2_pq.c" />
+    <ClCompile Include="$(DependencyRoot)nghttp2/lib/nghttp2_map.c" />
+    <ClCompile Include="$(DependencyRoot)nghttp2/lib/nghttp2_queue.c" />
+    <ClCompile Include="$(DependencyRoot)nghttp2/lib/nghttp2_frame.c" />
+    <ClCompile Include="$(DependencyRoot)nghttp2/lib/nghttp2_buf.c" />
+    <ClCompile Include="$(DependencyRoot)nghttp2/lib/nghttp2_stream.c" />
+    <ClCompile Include="$(DependencyRoot)nghttp2/lib/nghttp2_outbound_item.c" />
+    <ClCompile Include="$(DependencyRoot)nghttp2/lib/nghttp2_session.c" />
+    <ClCompile Include="$(DependencyRoot)nghttp2/lib/nghttp2_submit.c" />
+    <ClCompile Include="$(DependencyRoot)nghttp2/lib/nghttp2_helper.c" />
+    <ClCompile Include="$(DependencyRoot)nghttp2/lib/nghttp2_alpn.c" />
+    <ClCompile Include="$(DependencyRoot)nghttp2/lib/nghttp2_hd.c" />
+    <ClCompile Include="$(DependencyRoot)nghttp2/lib/nghttp2_hd_huffman.c" />
+    <ClCompile Include="$(DependencyRoot)nghttp2/lib/nghttp2_hd_huffman_data.c" />
+    <ClCompile Include="$(DependencyRoot)nghttp2/lib/nghttp2_version.c" />
+    <ClCompile Include="$(DependencyRoot)nghttp2/lib/nghttp2_priority_spec.c" />
+    <ClCompile Include="$(DependencyRoot)nghttp2/lib/nghttp2_option.c" />
+    <ClCompile Include="$(DependencyRoot)nghttp2/lib/nghttp2_callbacks.c" />
+    <ClCompile Include="$(DependencyRoot)nghttp2/lib/nghttp2_mem.c" />
+    <ClCompile Include="$(DependencyRoot)nghttp2/lib/nghttp2_http.c" />
+    <ClCompile Include="$(DependencyRoot)nghttp2/lib/nghttp2_rcbuf.c" />
+    <ClCompile Include="$(DependencyRoot)nghttp2/lib/nghttp2_extpri.c" />
+    <ClCompile Include="$(DependencyRoot)nghttp2/lib/nghttp2_ratelim.c" />
+    <ClCompile Include="$(DependencyRoot)nghttp2/lib/nghttp2_time.c" />
+    <ClCompile Include="$(DependencyRoot)nghttp2/lib/nghttp2_debug.c" />
+    <ClCompile Include="$(DependencyRoot)nghttp2/lib/sfparse.c" />
+  </ItemGroup>
+  <PropertyGroup>
+    <Nghttp2Defines>BUILDING_NGHTTP2;HAVE_WINDOWS_H=1;HAVE_GETTICKCOUNT64=1</Nghttp2Defines>
+    <Nghttp2Defines>$(Nghttp2Defines);ssize_t=int;NGHTTP2_NORETURN=</Nghttp2Defines>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <WarningLevel>Level1</WarningLevel>
+      <PreprocessorDefinitions>$(Nghttp2Defines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ProjectReference Include="Cipherazzi.Dependencies.vcxproj">
+      <Project>{F00DB2A1-F36E-5E40-9AE7-DEA489629C0C}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+</Project>
