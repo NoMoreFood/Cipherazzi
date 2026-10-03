@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <LangVersion>14</LangVersion>
+    <ApplicationHighDpiMode>PerMonitorV2</ApplicationHighDpiMode>
+    <ApplicationIcon>../assets/Cipherazzi.ico</ApplicationIcon>
+    <AssemblyName>Cipherazzi.Viewer</AssemblyName>
+    <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="../assets/Cipherazzi.ico" LogicalName="Cipherazzi.Viewer.Cipherazzi.ico" />
+    <None Update="Cipherazzi.Viewer.config" CopyToOutputDirectory="PreserveNewest"
+          CopyToPublishDirectory="PreserveNewest" ExcludeFromSingleFile="true" />
+    <ProjectReference Include="../data/Cipherazzi.Data.csproj" />
+    <Using Include="Cipherazzi.Data" />
+    <InternalsVisibleTo Include="Cipherazzi.UiTests" />
+  </ItemGroup>
+</Project>

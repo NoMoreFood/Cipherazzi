@@ -1,0 +1,64 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <CipherazziRoot>$(MSBuildThisFileDirectory)..\..\</CipherazziRoot>
+    <DependencyRoot>$(CipherazziRoot)tools\artifacts\build\dependencies\</DependencyRoot>
+    <OutDir>$(CipherazziRoot)tools\artifacts\build\bin\$(Configuration)\</OutDir>
+    <IntDir>$(CipherazziRoot)tools\artifacts\build\obj\$(MSBuildProjectName)\$(Configuration)\</IntDir>
+    <TargetName>$(MSBuildProjectName)</TargetName>
+    <PreferredToolArchitecture>x64</PreferredToolArchitecture>
+    <CL_MPCount Condition="'$(CL_MPCount)' == ''">1</CL_MPCount>
+    <LinkIncremental>false</LinkIncremental>
+    <ProductVersion Condition="'$(ProductVersion)' == ''">1.0.0</ProductVersion>
+    <NativeVersion>$([System.String]::Copy('$(ProductVersion)').Replace('.', ',')),0</NativeVersion>
+    <NativeDefines>UNICODE;_UNICODE;WIN32_LEAN_AND_MEAN;NOMINMAX</NativeDefines>
+    <NativeDefines>$(NativeDefines);_MSVC_STL_HARDENING=1;NGHTTP2_STATICLIB;NGHTTP2_NO_SSIZE_T</NativeDefines>
+    <NativeIncludes>$(CipherazziRoot)src\collector;$(DependencyRoot)sqlite</NativeIncludes>
+    <NativeIncludes>$(NativeIncludes);$(DependencyRoot)json\include</NativeIncludes>
+    <NativeIncludes>$(NativeIncludes);$(DependencyRoot)nghttp2\lib\includes</NativeIncludes>
+    <NativeIncludes>$(NativeIncludes);$(DependencyRoot)windivert\include</NativeIncludes>
+    <NativeLibraries>ws2_32.lib;iphlpapi.lib;fwpuclnt.lib;advapi32.lib;secur32.lib</NativeLibraries>
+    <NativeLibraries>$(NativeLibraries);tdh.lib;crypt32.lib;wevtapi.lib;bcrypt.lib</NativeLibraries>
+    <ResourceDefines>CIPHERAZZI_VERSION=$(NativeVersion)</ResourceDefines>
+    <VersionTextDefine>CIPHERAZZI_VERSION_TEXT=\&quot;$(ProductVersion)\&quot;</VersionTextDefine>
+    <ResourceDefines>$(ResourceDefines);$(VersionTextDefine)</ResourceDefines>
+    <ResourceIncludes>$(CipherazziRoot)src;$(IntDir)</ResourceIncludes>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <WarningLevel>Level4</WarningLevel>
+      <LanguageStandard>stdcpp23</LanguageStandard>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
+      <ConformanceMode>true</ConformanceMode>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
+      <PreprocessorDefinitions>$(NativeDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(NativeIncludes);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <AdditionalOptions Condition="'$(EnableASAN)' == 'true'"
+        >/fsanitize=address /utf-8 %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Condition="'$(Configuration)' == 'Debug'">
+      <Optimization>Disabled</Optimization>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <ClCompile Condition="'$(Configuration)' == 'Release'">
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <ResourceCompile>
+      <AdditionalIncludeDirectories>$(ResourceIncludes);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>$(ResourceDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>$(NativeLibraries);%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+</Project>

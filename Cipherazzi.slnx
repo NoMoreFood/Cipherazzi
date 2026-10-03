@@ -1,0 +1,79 @@
+<Solution>
+  <Configurations>
+    <BuildType Name="Debug" />
+    <BuildType Name="Release" />
+    <Platform Name="x64" />
+  </Configurations>
+  <Folder Name="/Applications/">
+    <Project Path="src/collector/Cipherazzi.Collector.vcxproj"
+             Id="7d097a64-8899-5fbf-9fb8-7d89f0a12fa6" />
+    <Project Path="src/adapters/Cipherazzi.EndpointAdapter.vcxproj"
+             Id="1b09cb92-3db3-5529-b346-93547715d0d4" />
+    <Project Path="src/viewer/Cipherazzi.Viewer.csproj">
+      <Platform Project="Any CPU" />
+    </Project>
+    <Project Path="src/relay/Cipherazzi.Relay.csproj">
+      <Platform Project="Any CPU" />
+    </Project>
+    <Project Path="src/publisher/Cipherazzi.Publisher.csproj">
+      <Platform Project="Any CPU" />
+    </Project>
+  </Folder>
+  <Folder Name="/Libraries/">
+    <Project Path="src/collector/Cipherazzi.Core.vcxproj"
+             Id="df61610e-5fd6-5dc0-b1f6-4b82ab02f135" />
+    <Project Path="src/data/Cipherazzi.Data.csproj">
+      <Platform Project="Any CPU" />
+    </Project>
+  </Folder>
+  <Folder Name="/Dependencies/">
+    <Project Path="tools/build/Cipherazzi.Dependencies.vcxproj"
+             Id="f00db2a1-f36e-5e40-9ae7-dea489629c0c" />
+    <Project Path="tools/build/Sqlite.vcxproj"
+             Id="48ef0e38-fd91-54cf-a3f6-9d3996c30318" />
+    <Project Path="tools/build/Nghttp2.vcxproj"
+             Id="ef65800c-e6df-5754-88f9-ad190756217a" />
+  </Folder>
+  <Folder Name="/Tests/">
+    <Project Path="tests/Credentials/Credentials.csproj">
+      <Platform Project="Any CPU" />
+    </Project>
+    <Project Path="tests/DatabaseLab/DatabaseLab.csproj">
+      <Platform Project="Any CPU" />
+    </Project>
+    <Project Path="tests/PerformanceAudit/PerformanceAudit.csproj">
+      <Platform Project="Any CPU" />
+    </Project>
+    <Project Path="tests/Publishing/Publishing.csproj">
+      <Platform Project="Any CPU" />
+    </Project>
+    <Project Path="tests/UiTests/Cipherazzi.UiTests.csproj">
+      <Platform Project="Any CPU" />
+    </Project>
+    <Project Path="tests/clients/SchannelClient.csproj">
+      <Platform Project="Any CPU" />
+    </Project>
+    <Project Path="tests/native/Cipherazzi.Tests.vcxproj"
+             Id="43474c5d-1722-59d5-98cd-3ff64e05e33c" />
+    <Project Path="tests/PerformanceAudit/Cipherazzi.Performance.vcxproj"
+             Id="26ed3a0a-7b71-505f-84e1-bde9b79e3a13" />
+    <Project Path="tests/clients/Cipherazzi.SchannelClient.vcxproj"
+             Id="c5d0e085-afca-5db6-90fa-f61c73cf63c9" />
+  </Folder>
+  <Folder Name="/Installer/">
+    <Project Path="tools/installer/Cipherazzi.Installer.wixproj">
+      <Build Project="true" />
+    </Project>
+  </Folder>
+  <Folder Name="/Build/">
+    <File Path="build.cmd" />
+    <File Path="Build.ps1" />
+    <File Path="Directory.Build.props" />
+    <File Path="tools/build/Native.props" />
+    <File Path="tools/build/Restore.ps1" />
+    <File Path="tools/build/Package.ps1" />
+    <File Path="tools/build/Sign.ps1" />
+    <File Path=".editorconfig" />
+    <File Path=".clang-format" />
+  </Folder>
+</Solution>
