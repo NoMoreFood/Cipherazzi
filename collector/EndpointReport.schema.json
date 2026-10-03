@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Cipherazzi public endpoint handshake report",
+  "type": "object",
+  "required": ["schema", "provider", "pid", "process_started_us", "handshake_started_us", "timestamp_us",
+    "role", "transport", "success"],
+  "properties": {
+    "schema": { "const": "cipherazzi.endpoint/1" },
+    "provider": { "type": "string", "minLength": 1, "maxLength": 128 },
+    "pid": { "type": "integer", "minimum": 1, "maximum": 4294967295 },
+    "process_name": { "type": "string", "maxLength": 256 },
+    "process_path": { "type": "string", "maxLength": 4096 },
+    "process_started_us": { "type": "integer", "minimum": 1, "maximum": 253402300799999999 },
+    "process_scope": { "enum": ["endpoint", "application"],
+      "description": "Endpoint identifies the process using TLS APIs. Application identity cannot match packets." },
+    "handshake_started_us": { "type": "integer", "minimum": 1, "maximum": 253402300799999999 },
+    "timestamp_us": { "type": "integer", "minimum": 1, "maximum": 253402300799999999 },
+    "local": { "$ref": "#/$defs/endpoint",
+      "description": "Omit unavailable socket endpoints; evidence without both endpoints remains unassociated." },
+    "remote": { "$ref": "#/$defs/endpoint" },
+    "role": { "enum": ["client", "server", "unknown"],
+      "description": "TLS connection role. Application identity does not establish the TLS process role." },
+    "transport": { "enum": ["TCP", "QUIC", "DTLS", "Unknown"] },
+    "success": { "type": "boolean" },
+    "error_code": { "type": "integer", "minimum": -2147483648, "maximum": 2147483647 },
+    "error_name": { "type": "string", "maxLength": 128, "pattern": "^[A-Z0-9_]*$" },
+    "peer_verified": { "type": "boolean" },
+    "tls_version": { "type": "integer", "minimum": 0, "maximum": 65535,
+      "description": "TLS or DTLS wire version. QUIC may omit an unspecified TLS wire version." },
+    "cipher_id": { "type": "integer", "minimum": 0, "maximum": 65535 },
+    "signature_scheme": { "type": "integer", "minimum": -1, "maximum": 65535,
+      "description": "Peer CertificateVerify signature scheme, when reported by the TLS endpoint." },
+    "local_signature_scheme": { "type": "integer", "minimum": -1, "maximum": 65535,
+      "description": "Local CertificateVerify signature scheme, when reported by the TLS endpoint." },
+    "group_id": { "type": "integer", "minimum": -1, "maximum": 65535 },
+    "selected_alpn": { "type": "string", "maxLength": 255 },
+    "server_name": { "type": "string", "maxLength": 253 },
+    "session_resumed": { "type": "boolean" },
+    "quic_original_dcid": { "type": "string", "maxLength": 40, "pattern": "^([0-9a-f]{2})*$",
+      "description": "Original destination connection ID. QUIC evidence without this ID remains unassociated." },
+    "server_certificates_der": { "$ref": "#/$defs/certificates" },
+    "client_certificates_der": { "$ref": "#/$defs/certificates" }
+  },
+  "allOf": [
+    { "if": { "properties": { "success": { "const": true } } },
+      "then": { "required": ["cipher_id"] } },
+    { "if": { "properties": { "success": { "const": true }, "transport": { "not": { "const": "QUIC" } } } },
+      "then": { "required": ["tls_version"] } },
+    { "if": { "properties": { "transport": { "const": "DTLS" }, "success": { "const": true } } },
+      "then": { "properties": { "tls_version": { "enum": [65279, 65277, 65276] } } } },
+    { "if": { "properties": { "transport": { "const": "QUIC" } } },
+      "then": { "properties": { "tls_version": { "anyOf": [{ "const": 0 }, { "minimum": 772 }] } } } }
+  ],
+  "$defs": {
+    "endpoint": {
+      "type": "object", "required": ["address", "port"],
+      "properties": { "address": { "type": "string", "maxLength": 45 },
+        "port": { "type": "integer", "minimum": 1, "maximum": 65535 } }
+    },
+    "certificates": { "type": "array", "maxItems": 16,
+      "items": { "type": "string", "contentEncoding": "base64", "maxLength": 350000 } }
+  }
+}

@@ -1,0 +1,29 @@
+[
+  {
+    "key_type": "ssh-ed25519-cert-v01@openssh.com",
+    "negotiated": "ssh-ed25519-cert-v01@openssh.com",
+    "signature": "ssh-ed25519",
+    "bits": 256,
+    "key_sha256": "1a7ac8177285a44bddce9d0a854d8d291aa4832b52db6f37cffff72dcb898a8b",
+    "public_key": "AAAAC3NzaC1lZDI1NTE5AAAAILI5Py3ybtoiKqMjsd3gNnotQMjTPgQiueCAzBFGwEWF",
+    "certificate": "AAAAIHNzaC1lZDI1NTE5LWNlcnQtdjAxQG9wZW5zc2guY29tAAAAIMFyKnS3zHKRzEgt9pJW1061QTNv9YtlCsrlsCNByHCpAAAAILI5Py3ybtoiKqMjsd3gNnotQMjTPgQiueCAzBFGwEWFAAAAAAAAACoAAAACAAAAFGNpcGhlcmF6emktdGVzdC1ob3N0AAAALgAAABRzZXJ2aWNlLmV4YW1wbGUudGVzdAAAABJhbGlhcy5leGFtcGxlLnRlc3QAAAAAXgvhAAAAAABw29iAAAAAAAAAAAAAAAAAAAAAMwAAAAtzc2gtZWQyNTUxOQAAACAcD3NYD7UqVdOoys43IOG2UJsPABSglmVRsM1zi5zs6AAAAFMAAAALc3NoLWVkMjU1MTkAAABANfnEJjlrcBDMkZONbLO3y3UgJxqugvLtWXkCYsYqu19RGyA1DTqI1OoLiNieKws0lJEiLpxzkCYcYBt2qODrAw=="
+  },
+  {
+    "key_type": "ssh-rsa-cert-v01@openssh.com",
+    "negotiated": "rsa-sha2-512-cert-v01@openssh.com",
+    "signature": "rsa-sha2-512",
+    "bits": 2048,
+    "key_sha256": "2300c881eef30ce7397aa4c86095c1ca75bf2d3a77d722bf29c03484249c27ca",
+    "public_key": "AAAAB3NzaC1yc2EAAAADAQABAAABAQD1dz75dO608XgoyXVNW1r+pvtVNiqOUXa19nBdq0m4bkn0RMaAYnzFxUIjRMdzLFr07QlaRJTi+Yc1HoyfrKI2B+NdqygC+C+oUWTmX4gxB7hRUw+JWbT58N37DbabWaHj9UCI7VnOnnrD/qtOt5M/JQd4nWVZoc/Z0iH4TKdYQ30CEHAla8scHbw71ff2GHkCsmDeqAaSy0J9mfNyGLx8ZX17qJY93JfkgkRycYdMDpNFKDKt/C7bQiZXE3vEgtHt9q7c4ZO0R54moo/oSQnpbW1koxiz4pyaB/RySnXSCSvZf0zinK46ZPzpUK1v5gZcvhchgvcdilgHKAnkD0Wt",
+    "certificate": "AAAAHHNzaC1yc2EtY2VydC12MDFAb3BlbnNzaC5jb20AAAAgjZEfAxL/lgooBo93XQllO5BIpZwYm01jfhStaZpqzgsAAAADAQABAAABAQD1dz75dO608XgoyXVNW1r+pvtVNiqOUXa19nBdq0m4bkn0RMaAYnzFxUIjRMdzLFr07QlaRJTi+Yc1HoyfrKI2B+NdqygC+C+oUWTmX4gxB7hRUw+JWbT58N37DbabWaHj9UCI7VnOnnrD/qtOt5M/JQd4nWVZoc/Z0iH4TKdYQ30CEHAla8scHbw71ff2GHkCsmDeqAaSy0J9mfNyGLx8ZX17qJY93JfkgkRycYdMDpNFKDKt/C7bQiZXE3vEgtHt9q7c4ZO0R54moo/oSQnpbW1koxiz4pyaB/RySnXSCSvZf0zinK46ZPzpUK1v5gZcvhchgvcdilgHKAnkD0WtAAAAAAAAACoAAAACAAAAFGNpcGhlcmF6emktdGVzdC1ob3N0AAAALgAAABRzZXJ2aWNlLmV4YW1wbGUudGVzdAAAABJhbGlhcy5leGFtcGxlLnRlc3QAAAAAXgvhAAAAAABw29iAAAAAAAAAAAAAAAAAAAAAMwAAAAtzc2gtZWQyNTUxOQAAACAcD3NYD7UqVdOoys43IOG2UJsPABSglmVRsM1zi5zs6AAAAFMAAAALc3NoLWVkMjU1MTkAAABAx5lG53cfc8LoWfmit8Hc1n9bgmbzyQl49Ir/nvebUzkc+P4FrMikYa2A7VTocX+KLcrzdCI2rIGVeIJ9pXBuAA=="
+  },
+  {
+    "key_type": "ecdsa-sha2-nistp384-cert-v01@openssh.com",
+    "negotiated": "ecdsa-sha2-nistp384-cert-v01@openssh.com",
+    "signature": "ecdsa-sha2-nistp384",
+    "bits": 384,
+    "key_sha256": "551388bc4d663977b1a95366e0689c64ca459ce0db9bda792321ad794ec04931",
+    "public_key": "AAAAE2VjZHNhLXNoYTItbmlzdHAzODQAAAAIbmlzdHAzODQAAABhBCQK7d4WkzRNrR1aLZiiOUTzzy1RvNo1QvS2g79byKQiMxeUKXMuzVZujOYExVWTTdhOuQSzywgea1oe4vxv5Q5jYeSQ/PGtLSSsBgNrSqEewe0Cdds+ve6nSiCmzA4LlA==",
+    "certificate": "AAAAKGVjZHNhLXNoYTItbmlzdHAzODQtY2VydC12MDFAb3BlbnNzaC5jb20AAAAgqkOYstOEv25EoOiytSGypvy1vBQRlDE0kOhoiej2Om8AAAAIbmlzdHAzODQAAABhBCQK7d4WkzRNrR1aLZiiOUTzzy1RvNo1QvS2g79byKQiMxeUKXMuzVZujOYExVWTTdhOuQSzywgea1oe4vxv5Q5jYeSQ/PGtLSSsBgNrSqEewe0Cdds+ve6nSiCmzA4LlAAAAAAAAAAqAAAAAgAAABRjaXBoZXJhenppLXRlc3QtaG9zdAAAAC4AAAAUc2VydmljZS5leGFtcGxlLnRlc3QAAAASYWxpYXMuZXhhbXBsZS50ZXN0AAAAAF4L4QAAAAAAcNvYgAAAAAAAAAAAAAAAAAAAADMAAAALc3NoLWVkMjU1MTkAAAAgHA9zWA+1KlXTqMrONyDhtlCbDwAUoJZlUbDNc4uc7OgAAABTAAAAC3NzaC1lZDI1NTE5AAAAQFzUtyrxsKojLUQlfkUdMMwMBylxWRCw5jXLD1s44lItBJC+eRjxEGeQG4E5APZF5czjufdIkdQy+cTvFyw4YwU="
+  }
+]

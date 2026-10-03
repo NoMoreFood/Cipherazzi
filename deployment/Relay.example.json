@@ -1,0 +1,5 @@
+{
+  "source": "capture.db",
+  "provider": "sqlserver",
+  "connection-file": "Relay.credential"
+}

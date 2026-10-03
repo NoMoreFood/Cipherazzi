@@ -1,0 +1,8 @@
+{
+  "db": "capture.db",
+  "schannel": true,
+  "retention-days": 30,
+  "retention-mb": 512,
+  "max-flows": 32768,
+  "buffer-mb": 128
+}

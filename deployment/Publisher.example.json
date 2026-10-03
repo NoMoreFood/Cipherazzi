@@ -1,0 +1,5 @@
+{
+  "source": "capture.db",
+  "windows-events": true,
+  "events": "connections,endpoints,health"
+}

@@ -1,0 +1,242 @@
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs" xmlns:util="http://wixtoolset.org/schemas/v4/wxs/util">
+  <?define UpgradeCode = "{C4921890-E4DC-4E08-A881-CDF4AABBF6F9}" ?>
+  <Package Name="Cipherazzi" Manufacturer="Cipherazzi" Version="$(var.ProductVersion)" Language="1033"
+           UpgradeCode="$(var.UpgradeCode)" Scope="perMachine" InstallerVersion="500">
+    <MajorUpgrade AllowSameVersionUpgrades="yes" Schedule="afterInstallInitialize"
+                  DowngradeErrorMessage="A newer version of Cipherazzi is already installed." />
+    <MediaTemplate EmbedCab="yes" CompressionLevel="high" />
+    <Launch Condition="Installed OR (VersionNT64 AND OSBUILD &gt;= 19041)"
+            Message="Cipherazzi requires 64-bit Windows 10 or Windows Server with build 19041 or later." />
+    <Icon Id="Cipherazzi.ico" SourceFile="../assets/Cipherazzi.ico" />
+    <WixVariable Id="WixUIDialogBmp" Value="../assets/InstallerDialog.png" />
+    <WixVariable Id="WixUIBannerBmp" Value="../assets/InstallerBanner.png" />
+    <Property Id="ARPPRODUCTICON" Value="Cipherazzi.ico" />
+    <Property Id="WixUI_Mode" Value="FeatureTree" />
+    <Property Id="COLLECTOROPTIONS" Secure="yes" />
+    <Property Id="RELAYCONFIG" Secure="yes" />
+    <Property Id="PUBLISHERCONFIG" Secure="yes" />
+    <UIRef Id="CipherazziUI" />
+
+    <StandardDirectory Id="ProgramFiles64Folder">
+      <Directory Id="INSTALLFOLDER" Name="Cipherazzi">
+        <Directory Id="LOOPBACKFOLDER" Name="CipherazziLoopback" />
+      </Directory>
+    </StandardDirectory>
+    <StandardDirectory Id="CommonAppDataFolder">
+      <Directory Id="DATADIR" Name="Cipherazzi" />
+    </StandardDirectory>
+    <StandardDirectory Id="ProgramMenuFolder">
+      <Directory Id="CipherazziPrograms" Name="Cipherazzi" />
+    </StandardDirectory>
+
+    <Feature Id="Collector" Title="Collector" Level="1" AllowAdvertise="no"
+             Description="Runs the network cryptography capture service and stores its journal in ProgramData.">
+      <ComponentRef Id="CollectorService" />
+      <ComponentRef Id="CaptureDirectory" />
+      <ComponentRef Id="EndpointSchema" />
+      <ComponentRef Id="JavaWatcher" />
+      <ComponentRef Id="EndpointAdapter" />
+      <ComponentRef Id="EndpointAdapterLicense" />
+      <ComponentRef Id="EndpointAdapterLibraryLicense" />
+      <ComponentRef Id="LoopbackLibrary" />
+      <ComponentRef Id="LoopbackDriver" />
+      <ComponentRef Id="LoopbackLicense" />
+      <ComponentRef Id="PublishingSchema" />
+      <ComponentRef Id="CollectorExample" />
+    </Feature>
+    <Feature Id="Relay" Title="Database relay service" Level="1000" AllowAdvertise="no"
+             Description="Automatically uploads metadata. Requires the RELAYCONFIG configuration file property.">
+      <ComponentRef Id="Relay" />
+      <ComponentRef Id="RelayExample" />
+      <ComponentRef Id="CaptureDirectory" />
+    </Feature>
+    <Feature Id="Publisher" Title="Event publishing service" Level="1000" AllowAdvertise="no"
+             Description="Automatically publishes events. Requires the PUBLISHERCONFIG configuration file property.">
+      <ComponentRef Id="Publisher" />
+      <ComponentRef Id="PublisherExample" />
+      <ComponentRef Id="CaptureDirectory" />
+    </Feature>
+    <Feature Id="Viewer" Title="Viewer" Level="1" AllowAdvertise="no"
+             Description="Browse local or remote capture data. Includes the desktop runtime and Start menu shortcut."
+             ConfigurableDirectory="INSTALLFOLDER">
+      <ComponentRef Id="ViewerApplication" />
+      <ComponentRef Id="ViewerDefaults" />
+    </Feature>
+
+    <Component Id="CollectorService" Directory="INSTALLFOLDER" Guid="*" Bitness="always64">
+      <File Id="CollectorExe" Source="$(var.PayloadDirectory)/Cipherazzi.Collector.exe" KeyPath="yes" />
+      <RegistryValue Root="HKLM" Key="Software\Cipherazzi" Name="CollectorInstaller" Type="string"
+                     Value="$(var.UpgradeCode)" />
+      <RegistryValue Root="HKLM" Key="Software\Cipherazzi" Name="CollectorOptions" Type="string"
+                     Value="[COLLECTOROPTIONS]" />
+      <RegistryValue Root="HKLM" Key="SYSTEM\CurrentControlSet\Services\EventLog\Application\Cipherazzi"
+                     Name="EventMessageFile" Type="expandable" Value="[#CollectorExe]" />
+      <RegistryValue Root="HKLM" Key="SYSTEM\CurrentControlSet\Services\EventLog\Application\Cipherazzi"
+                     Name="TypesSupported" Type="integer" Value="7" />
+      <ServiceInstall Id="CollectorRegistration" Name="Cipherazzi"
+                      DisplayName="Cipherazzi Network Cryptography Monitor" Type="ownProcess" Start="auto"
+                      Account="LocalSystem" ErrorControl="normal" Vital="yes"
+                      Arguments="--service [COLLECTOROPTIONS]"
+                      Description="Records network cryptography metadata and local process ownership.">
+        <ServiceDependency Id="Tcpip" />
+        <util:ServiceConfig FirstFailureActionType="restart" SecondFailureActionType="restart"
+                            ThirdFailureActionType="none" ResetPeriodInDays="1" RestartServiceDelayInSeconds="5" />
+      </ServiceInstall>
+      <ServiceControl Id="CollectorLifecycle" Name="Cipherazzi" Start="install" Stop="both"
+                      Remove="uninstall" Wait="yes" />
+    </Component>
+    <Component Id="CaptureDirectory" Directory="DATADIR" Guid="{50610D2D-869C-4F65-863D-57E8B3DD910C}"
+               Bitness="always64">
+      <CreateFolder>
+        <PermissionEx Sddl="D:P(A;OICI;FA;;;SY)(A;OICI;FA;;;BA)(A;OICI;GRGX;;;BU)" />
+      </CreateFolder>
+    </Component>
+    <Component Id="EndpointSchema" Directory="INSTALLFOLDER" Guid="*" Bitness="always64">
+      <File Source="$(var.PayloadDirectory)/EndpointReport.schema.json" />
+    </Component>
+    <Component Id="LoopbackLibrary" Directory="LOOPBACKFOLDER" Guid="*" Bitness="always64">
+      <File Source="$(var.PayloadDirectory)/CipherazziLoopback/WinDivert.dll" />
+    </Component>
+    <Component Id="LoopbackDriver" Directory="LOOPBACKFOLDER" Guid="*" Bitness="always64">
+      <File Source="$(var.PayloadDirectory)/CipherazziLoopback/WinDivert64.sys" />
+    </Component>
+    <Component Id="LoopbackLicense" Directory="LOOPBACKFOLDER" Guid="*" Bitness="always64">
+      <File Source="$(var.PayloadDirectory)/CipherazziLoopback/LICENSE" />
+    </Component>
+    <Component Id="CollectorExample" Directory="INSTALLFOLDER" Guid="*" Bitness="always64">
+      <File Source="$(var.PayloadDirectory)/Collector.example.json" />
+    </Component>
+    <Component Id="RelayExample" Directory="INSTALLFOLDER" Guid="*" Bitness="always64">
+      <File Source="$(var.PayloadDirectory)/Relay.example.json" />
+    </Component>
+    <Component Id="PublisherExample" Directory="INSTALLFOLDER" Guid="*" Bitness="always64">
+      <File Source="$(var.PayloadDirectory)/Publisher.example.json" />
+    </Component>
+    <Component Id="JavaWatcher" Directory="INSTALLFOLDER" Guid="*" Bitness="always64">
+      <File Source="$(var.PayloadDirectory)/Watch-Java.ps1" />
+    </Component>
+    <Component Id="EndpointAdapter" Directory="INSTALLFOLDER" Guid="*" Bitness="always64">
+      <File Source="$(var.PayloadDirectory)/Cipherazzi.EndpointAdapter.exe" />
+    </Component>
+    <Component Id="EndpointAdapterLicense" Directory="INSTALLFOLDER" Guid="*" Bitness="always64">
+      <File Source="$(var.PayloadDirectory)/Frida.COPYING" />
+    </Component>
+    <Component Id="EndpointAdapterLibraryLicense" Directory="INSTALLFOLDER" Guid="*" Bitness="always64">
+      <File Source="$(var.PayloadDirectory)/Frida.COPYING.LIB" />
+    </Component>
+    <Component Id="Relay" Directory="INSTALLFOLDER" Guid="*" Bitness="always64">
+      <File Id="RelayExe" Source="$(var.PayloadDirectory)/Cipherazzi.Relay.exe" KeyPath="yes" />
+      <RegistryValue Root="HKLM" Key="Software\Cipherazzi" Name="RelayConfig" Type="string"
+                     Value="[RELAYCONFIG]" />
+      <RegistryValue Root="HKLM" Key="Software\Cipherazzi" Name="RelayInstaller" Type="string"
+                     Value="$(var.UpgradeCode)" />
+      <ServiceInstall Id="RelayRegistration" Name="CipherazziRelay" DisplayName="Cipherazzi Database Relay"
+                      Type="ownProcess" Start="auto" Account="LocalSystem" ErrorControl="normal" Vital="yes"
+                      Arguments="--service --config &quot;[RELAYCONFIG]&quot;"
+                      Description="Uploads network cryptography metadata to the configured database.">
+        <util:ServiceConfig FirstFailureActionType="restart" SecondFailureActionType="restart"
+                            ThirdFailureActionType="restart" ResetPeriodInDays="1" RestartServiceDelayInSeconds="5" />
+      </ServiceInstall>
+      <ServiceControl Id="RelayLifecycle" Name="CipherazziRelay" Start="install" Stop="both"
+                      Remove="uninstall" Wait="yes" />
+    </Component>
+    <Component Id="Publisher" Directory="INSTALLFOLDER" Guid="*" Bitness="always64">
+      <File Source="$(var.PayloadDirectory)/Cipherazzi.Publisher.exe" KeyPath="yes" />
+      <RegistryValue Root="HKLM" Key="Software\Cipherazzi" Name="PublisherConfig" Type="string"
+                     Value="[PUBLISHERCONFIG]" />
+      <RegistryValue Root="HKLM" Key="Software\Cipherazzi" Name="PublisherInstaller" Type="string"
+                     Value="$(var.UpgradeCode)" />
+      <ServiceInstall Id="PublisherRegistration" Name="CipherazziPublisher" DisplayName="Cipherazzi Event Publisher"
+                      Type="ownProcess" Start="auto" Account="LocalSystem" ErrorControl="normal" Vital="yes"
+                      Arguments="--service --config &quot;[PUBLISHERCONFIG]&quot;"
+                      Description="Publishes cryptography metadata to the configured event destinations.">
+        <util:ServiceConfig FirstFailureActionType="restart" SecondFailureActionType="restart"
+                            ThirdFailureActionType="restart" ResetPeriodInDays="1" RestartServiceDelayInSeconds="5" />
+      </ServiceInstall>
+      <ServiceControl Id="PublisherLifecycle" Name="CipherazziPublisher" Start="install" Stop="both"
+                      Remove="uninstall" Wait="yes" />
+    </Component>
+    <Component Id="PublishingSchema" Directory="INSTALLFOLDER" Guid="*" Bitness="always64">
+      <File Source="$(var.PayloadDirectory)/Event.schema.json" />
+    </Component>
+    <Component Id="ViewerApplication" Directory="INSTALLFOLDER" Guid="*" Bitness="always64">
+      <File Id="ViewerExe" Source="$(var.PayloadDirectory)/Cipherazzi.Viewer.exe" KeyPath="yes">
+        <Shortcut Id="ViewerStartMenu" Name="Cipherazzi Viewer" Directory="CipherazziPrograms"
+                  WorkingDirectory="INSTALLFOLDER" Advertise="yes" Icon="Cipherazzi.ico" IconIndex="0" />
+      </File>
+      <RemoveFolder Id="RemoveProgramsFolder" Directory="CipherazziPrograms" On="uninstall" />
+    </Component>
+    <Component Id="ViewerDefaults" Directory="INSTALLFOLDER" Guid="*" Bitness="always64">
+      <File Source="$(var.PayloadDirectory)/Cipherazzi.Viewer.config" />
+    </Component>
+
+    <Property Id="OSBUILD" Secure="yes">
+      <RegistrySearch Id="OperatingSystemBuild" Root="HKLM" Key="SOFTWARE\Microsoft\Windows NT\CurrentVersion"
+                      Name="CurrentBuildNumber" Type="raw" Bitness="always64" />
+    </Property>
+    <Property Id="EXISTINGCOLLECTOR" Secure="yes">
+      <RegistrySearch Id="ExistingCollectorService" Root="HKLM"
+                      Key="SYSTEM\CurrentControlSet\Services\Cipherazzi" Name="ImagePath" Type="raw"
+                      Bitness="always64" />
+    </Property>
+    <Property Id="COLLECTORINSTALLER" Secure="yes">
+      <RegistrySearch Id="CollectorOwner" Root="HKLM" Key="Software\Cipherazzi" Name="CollectorInstaller"
+                      Type="raw" Bitness="always64" />
+    </Property>
+    <CustomAction Id="CheckCollectorService"
+                  Error="An unmanaged Cipherazzi service exists. Remove it before installing Collector." />
+    <CustomAction Id="CheckRelayConfig" Error="Supply RELAYCONFIG with the absolute path to a relay JSON configuration file." />
+    <CustomAction Id="CheckPublisherConfig"
+                  Error="Supply PUBLISHERCONFIG with the absolute path to a publisher JSON configuration file." />
+    <CustomAction Id="CheckRelayService" Error="An unmanaged Cipherazzi relay service exists. Remove it before installing Relay." />
+    <CustomAction Id="CheckPublisherService"
+                  Error="An unmanaged Cipherazzi publishing service exists. Remove it before installing Publisher." />
+    <Property Id="EXISTINGRELAY" Secure="yes">
+      <RegistrySearch Id="ExistingRelayService" Root="HKLM" Key="SYSTEM\CurrentControlSet\Services\CipherazziRelay"
+                      Name="ImagePath" Type="raw" Bitness="always64" />
+    </Property>
+    <Property Id="RELAYINSTALLER" Secure="yes">
+      <RegistrySearch Id="RelayOwner" Root="HKLM" Key="Software\Cipherazzi" Name="RelayInstaller"
+                      Type="raw" Bitness="always64" />
+    </Property>
+    <Property Id="EXISTINGPUBLISHER" Secure="yes">
+      <RegistrySearch Id="ExistingPublisherService" Root="HKLM" Key="SYSTEM\CurrentControlSet\Services\CipherazziPublisher"
+                      Name="ImagePath" Type="raw" Bitness="always64" />
+    </Property>
+    <Property Id="PUBLISHERINSTALLER" Secure="yes">
+      <RegistrySearch Id="PublisherOwner" Root="HKLM" Key="Software\Cipherazzi" Name="PublisherInstaller"
+                      Type="raw" Bitness="always64" />
+    </Property>
+    <SetProperty Id="COLLECTOROPTIONS" Value="[SAVEDCOLLECTOROPTIONS]" Before="CostFinalize"
+                 Condition="NOT COLLECTOROPTIONS AND SAVEDCOLLECTOROPTIONS" />
+    <SetProperty Id="RELAYCONFIG" Value="[SAVEDRELAYCONFIG]" Before="CostFinalize"
+                 Condition="NOT RELAYCONFIG AND SAVEDRELAYCONFIG" />
+    <SetProperty Id="PUBLISHERCONFIG" Value="[SAVEDPUBLISHERCONFIG]" Before="CostFinalize"
+                 Condition="NOT PUBLISHERCONFIG AND SAVEDPUBLISHERCONFIG" />
+    <Property Id="SAVEDCOLLECTOROPTIONS">
+      <RegistrySearch Id="CollectorOptionsSearch" Root="HKLM" Key="Software\Cipherazzi" Name="CollectorOptions"
+                      Type="raw" Bitness="always64" />
+    </Property>
+    <Property Id="SAVEDRELAYCONFIG">
+      <RegistrySearch Id="RelayConfigSearch" Root="HKLM" Key="Software\Cipherazzi" Name="RelayConfig"
+                      Type="raw" Bitness="always64" />
+    </Property>
+    <Property Id="SAVEDPUBLISHERCONFIG">
+      <RegistrySearch Id="PublisherConfigSearch" Root="HKLM" Key="Software\Cipherazzi" Name="PublisherConfig"
+                      Type="raw" Bitness="always64" />
+    </Property>
+    <InstallExecuteSequence>
+      <Custom Action="CheckRelayService" After="CostFinalize"
+              Condition="&amp;Relay = 3 AND !Relay &lt;&gt; 3 AND EXISTINGRELAY AND
+                         RELAYINSTALLER &lt;&gt; &quot;$(var.UpgradeCode)&quot;" />
+      <Custom Action="CheckPublisherService" After="CostFinalize"
+              Condition="&amp;Publisher = 3 AND !Publisher &lt;&gt; 3 AND EXISTINGPUBLISHER AND
+                         PUBLISHERINSTALLER &lt;&gt; &quot;$(var.UpgradeCode)&quot;" />
+      <Custom Action="CheckRelayConfig" After="CostFinalize" Condition="&amp;Relay = 3 AND NOT RELAYCONFIG" />
+      <Custom Action="CheckPublisherConfig" After="CostFinalize" Condition="&amp;Publisher = 3 AND NOT PUBLISHERCONFIG" />
+      <Custom Action="CheckCollectorService" After="CostFinalize"
+              Condition="&amp;Collector = 3 AND !Collector &lt;&gt; 3 AND EXISTINGCOLLECTOR AND
+                         COLLECTORINSTALLER &lt;&gt; &quot;$(var.UpgradeCode)&quot;" />
+    </InstallExecuteSequence>
+  </Package>
+</Wix>

@@ -1,0 +1,10 @@
+/build/
+/dist/
+/.work/
+/.vs/
+**/bin/
+**/obj/
+**/__pycache__/
+*.db
+*.db-shm
+*.db-wal

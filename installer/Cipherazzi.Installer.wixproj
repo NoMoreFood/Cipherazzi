@@ -1,0 +1,16 @@
+<Project Sdk="WixToolset.Sdk/7.0.0">
+  <PropertyGroup>
+    <OutputName>Cipherazzi-win-x64</OutputName>
+    <InstallerPlatform>x64</InstallerPlatform>
+    <ProductVersion Condition="'$(ProductVersion)' == ''">1.0.0</ProductVersion>
+    <PayloadDirectory Condition="'$(PayloadDirectory)' == ''">$(MSBuildThisFileDirectory)../dist</PayloadDirectory>
+    <DefineConstants>$(DefineConstants);ProductVersion=$(ProductVersion)</DefineConstants>
+    <DefineConstants>$(DefineConstants);PayloadDirectory=$(PayloadDirectory)</DefineConstants>
+    <Cultures>en-us</Cultures>
+    <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="WixToolset.UI.wixext" Version="7.0.0" />
+    <PackageReference Include="WixToolset.Util.wixext" Version="7.0.0" />
+  </ItemGroup>
+</Project>

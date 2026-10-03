@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="493" height="58" viewBox="0 0 493 58">
+  <rect width="493" height="58" fill="#ffffff" />
+  <path fill="none" stroke="#20618a" stroke-opacity="0.13" stroke-width="1"
+        d="M429 0v10l12 12M493 14h-7l-11 11M493 46h-17l-10-10M434 58v-8l10-10" />
+  <g fill="#5ce1cc" opacity="0.65">
+    <circle cx="429" cy="10" r="2" />
+    <circle cx="486" cy="14" r="2" />
+    <circle cx="434" cy="50" r="2" />
+  </g>
+  <image href="Cipherazzi.svg" x="440" y="5" width="48" height="48" />
+</svg>
