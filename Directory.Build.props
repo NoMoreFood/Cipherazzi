@@ -1,0 +1,19 @@
+<Project>
+  <PropertyGroup>
+    <CipherazziRoot>$(MSBuildThisFileDirectory)</CipherazziRoot>
+    <ProductVersion Condition="'$(ProductVersion)' == ''">1.0.0</ProductVersion>
+    <Version>$(ProductVersion)</Version>
+    <SignArtifacts Condition="'$(SignArtifacts)' == ''">false</SignArtifacts>
+    <PowerShellCommand>pwsh.exe -NoLogo -NoProfile -ExecutionPolicy Bypass -File</PowerShellCommand>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(MSBuildProjectExtension)' == '.csproj'">
+    <UseArtifactsOutput>true</UseArtifactsOutput>
+    <ArtifactsPath>$(CipherazziRoot)tools\artifacts\build\managed</ArtifactsPath>
+    <LangVersion>14</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(MSBuildProjectExtension)' == '.wixproj'">
+    <BaseIntermediateOutputPath>$(CipherazziRoot)tools\artifacts\build\obj\</BaseIntermediateOutputPath>
+  </PropertyGroup>
+</Project>
