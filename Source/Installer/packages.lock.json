@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "dependencies": {
+    "native,Version=v0.0": {
+      "WixToolset.UI.wixext": {
+        "type": "Direct",
+        "requested": "[7.0.1, )",
+        "resolved": "7.0.1",
+        "contentHash": "kylQIF5hIs+sQcdGdHABQ1Ums1c/oajFj1FgH3AF1x9KDPxZ+JuRJniECGsd4jCy0MrFpL5Qjv4T0Cs0DYkBQw=="
+      },
+      "WixToolset.Util.wixext": {
+        "type": "Direct",
+        "requested": "[7.0.1, )",
+        "resolved": "7.0.1",
+        "contentHash": "xJkQvpxQT6kcXnSbkUy6qQs741DxzIkzlgkVikHc9XzW9uo9dLwGeoO3VUXXX1EwYmraKi5rzb1QcYhl4CUFHg=="
+      }
+    },
+    "native,Version=v0.0/win": {},
+    "native,Version=v0.0/win-arm64": {},
+    "native,Version=v0.0/win-x64": {},
+    "native,Version=v0.0/win-x86": {}
+  }
+}

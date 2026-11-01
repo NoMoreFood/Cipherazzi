@@ -1,0 +1,70 @@
+<Solution>
+  <Configurations>
+    <BuildType Name="Debug" />
+    <BuildType Name="Release" />
+    <Platform Name="x64" />
+  </Configurations>
+  <Folder Name="/Applications/">
+    <Project Path="../Source/Collector/Cipherazzi.Collector.vcxproj"
+             Id="7d097a64-8899-5fbf-9fb8-7d89f0a12fa6" />
+    <Project Path="../Source/Viewer/Cipherazzi.Viewer.csproj">
+      <Platform Project="Any CPU" />
+    </Project>
+    <Project Path="../Source/Relay/Cipherazzi.Relay.csproj">
+      <Platform Project="Any CPU" />
+    </Project>
+    <Project Path="../Source/Publisher/Cipherazzi.Publisher.csproj">
+      <Platform Project="Any CPU" />
+    </Project>
+  </Folder>
+  <Folder Name="/Libraries/">
+    <Project Path="../Source/Collector/Cipherazzi.Core.vcxproj"
+             Id="df61610e-5fd6-5dc0-b1f6-4b82ab02f135" />
+    <Project Path="../Source/Data/Cipherazzi.Data.csproj">
+      <Platform Project="Any CPU" />
+    </Project>
+  </Folder>
+  <Folder Name="/Dependencies/">
+    <Project Path="Cipherazzi.Dependencies.vcxproj"
+             Id="f00db2a1-f36e-5e40-9ae7-dea489629c0c" />
+    <Project Path="Sqlite.vcxproj"
+             Id="48ef0e38-fd91-54cf-a3f6-9d3996c30318" />
+  </Folder>
+  <Folder Name="/Tests/">
+    <Project Path="../Test/DatabaseLab/DatabaseLab.csproj">
+      <Platform Project="Any CPU" />
+    </Project>
+    <Project Path="../Test/PerformanceAudit/PerformanceAudit.csproj">
+      <Platform Project="Any CPU" />
+    </Project>
+    <Project Path="../Test/Publishing/Publishing.csproj">
+      <Platform Project="Any CPU" />
+    </Project>
+    <Project Path="../Test/UiTests/Cipherazzi.UiTests.csproj">
+      <Platform Project="Any CPU" />
+    </Project>
+    <Project Path="../Test/Clients/SchannelClient.csproj">
+      <Platform Project="Any CPU" />
+    </Project>
+    <Project Path="../Test/Native/Cipherazzi.Tests.vcxproj"
+             Id="43474c5d-1722-59d5-98cd-3ff64e05e33c" />
+  </Folder>
+  <Folder Name="/Installer/">
+    <Project Path="../Source/Installer/Cipherazzi.InstallerActions.vcxproj"
+             Id="67529859-842e-4b71-a129-51768e348166" />
+    <Project Path="../Source/Installer/Cipherazzi.Installer.wixproj">
+      <Build Project="false" />
+    </Project>
+  </Folder>
+  <Folder Name="/Build/">
+    <File Path="Build.cmd" />
+    <File Path="Build.ps1" />
+    <File Path="../Directory.Build.props" />
+    <File Path="Native.props" />
+    <File Path="Restore.ps1" />
+    <File Path="Package.ps1" />
+    <File Path="Sign.ps1" />
+    <File Path="../.editorconfig" />
+    <File Path="../.clang-format" />
+  </Folder>
+</Solution>
