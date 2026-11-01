@@ -1,0 +1,44 @@
+<Project Sdk="WixToolset.Sdk/7.0.1">
+  <PropertyGroup>
+    <OutputName>Cipherazzi-win-x64</OutputName>
+    <InstallerPlatform>x64</InstallerPlatform>
+    <ProductVersion Condition="'$(ProductVersion)' == ''">1.0.0</ProductVersion>
+    <PayloadDirectory>$(CipherazziRoot)Build\Temp\package\$(Configuration)</PayloadDirectory>
+    <OutputPath>$(CipherazziRoot)Build\Output\</OutputPath>
+    <DefineConstants>$(DefineConstants);ProductVersion=$(ProductVersion)</DefineConstants>
+    <DefineConstants>$(DefineConstants);PayloadDirectory=$(PayloadDirectory)</DefineConstants>
+    <Cultures>en-us</Cultures>
+    <!-- Same-version major upgrades intentionally include the current product version. -->
+    <SuppressIces>$(SuppressIces);ICE61</SuppressIces>
+    <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="WixToolset.UI.wixext" Version="7.0.1" />
+    <PackageReference Include="WixToolset.Util.wixext" Version="7.0.1" />
+    <ProjectReference Include="Cipherazzi.InstallerActions.vcxproj" ReferenceOutputAssembly="false"
+                      DoNotHarvest="true" />
+    <ProjectReference Include="../Collector/Cipherazzi.Collector.vcxproj" ReferenceOutputAssembly="false"
+                      DoNotHarvest="true" />
+    <ProjectReference Include="../Viewer/Cipherazzi.Viewer.csproj" ReferenceOutputAssembly="false"
+                      DoNotHarvest="true" />
+    <ProjectReference Include="../Relay/Cipherazzi.Relay.csproj" ReferenceOutputAssembly="false"
+                      DoNotHarvest="true" />
+    <ProjectReference Include="../Publisher/Cipherazzi.Publisher.csproj" ReferenceOutputAssembly="false"
+                      DoNotHarvest="true" />
+  </ItemGroup>
+  <Target Name="PreparePayload" BeforeTargets="CoreCompile" Condition="'$(DesignTimeBuild)' != 'true'">
+    <PropertyGroup>
+      <PackageScript>$(CipherazziRoot)Build\Package.ps1</PackageScript>
+      <PackageCommand>$(PowerShellCommand) &quot;$(PackageScript)&quot; -Configuration $(Configuration)</PackageCommand>
+      <PackageCommand>$(PackageCommand) -ProductVersion $(ProductVersion)</PackageCommand>
+      <PackageCommand>$(PackageCommand) -SignArtifacts $(SignArtifacts)</PackageCommand>
+    </PropertyGroup>
+    <Exec Command="$(PackageCommand)" />
+  </Target>
+  <Target Name="SignInstaller" AfterTargets="Build" Condition="'$(SignArtifacts)' == 'true'">
+    <PropertyGroup>
+      <SignScript>$(CipherazziRoot)Build\Sign.ps1</SignScript>
+    </PropertyGroup>
+    <Exec Command="$(PowerShellCommand) &quot;$(SignScript)&quot; -Path &quot;$(TargetPath)&quot;" />
+  </Target>
+</Project>

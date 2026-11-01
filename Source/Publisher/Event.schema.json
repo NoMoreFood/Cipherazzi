@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Cipherazzi published metadata snapshot",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "id", "database_id", "revision", "type", "timestamp_us", "computer", "payload"],
+  "properties": {
+    "schema": { "const": "cipherazzi.event/1" },
+    "id": { "type": "string", "pattern": "^[0-9A-F]{64}$" },
+    "database_id": { "type": "string", "minLength": 32, "maxLength": 38 },
+    "revision": { "type": "integer", "minimum": 0 },
+    "type": { "enum": ["connection", "endpoint", "health", "policy"] },
+    "timestamp_us": { "type": "integer" },
+    "computer": { "type": "string", "maxLength": 256 },
+    "payload": { "type": "object" },
+    "truncated": { "type": "boolean" }
+  }
+}

@@ -1,0 +1,9 @@
+/Build/Temp/
+/Build/Output/
+**/.vs/
+**/bin/
+**/obj/
+**/__pycache__/
+*.db
+*.db-shm
+*.db-wal
